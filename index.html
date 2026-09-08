@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Crypto App UI - Tema Verde</title>
+    <title>Crypto App UI - Prime Markets</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -33,6 +33,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -74,10 +76,9 @@
         <!-- ==================== TELA DE LOGIN OVERLAY ==================== -->
         <div id="login-screen" class="absolute inset-0 z-50 bg-[#181A20] flex flex-col justify-between p-6 overflow-y-auto transition-all duration-500">
             <div>
-                <!-- Topbar do Login com Logo Integrada diretamente no HTML (SVG) -->
+                <!-- Topbar do Login com Logo Integrada -->
                 <div class="flex items-center justify-between mt-2 mb-8">
                     <div class="flex items-center gap-2">
-                        <!-- Logo 100% embutida em HTML (Estilo Premium Crypto / Exchange) -->
                         <svg class="h-11 w-auto" viewBox="0 0 240 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="prime_bg" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
@@ -103,20 +104,12 @@
                                 </filter>
                             </defs>
 
-                            <!-- Frame com Borda de Brilho -->
                             <rect x="1" y="1" width="46" height="46" rx="14" fill="url(#prime_bg)" stroke="url(#stroke_glow)" stroke-width="1.5"/>
-                            
-                            <!-- Geometria Isométrica 3D do 'P' Lapidado -->
-                            <!-- Faceta Superior/Esquerda -->
                             <path d="M24 8L37 15.5V23.5L24 16L11 23.5V15.5L24 8Z" fill="url(#prime_cyan)"/>
-                            <!-- Faceta Direita (P Form/Loop) -->
                             <path d="M24 16L37 23.5V31.5L24 24V16Z" fill="url(#prime_emerald)"/>
-                            <!-- Faceta Inferior/Haste Esquerda -->
                             <path d="M11 23.5L24 31.5V39.5L11 31.5V23.5Z" fill="#059669"/>
-                            <!-- Núcleo Luminoso Central -->
                             <circle cx="24" cy="24" r="3.5" fill="#FFFFFF" filter="url(#neon_glow)"/>
 
-                            <!-- Tipografia PRIME MARKETS -->
                             <text x="60" y="28" fill="#FFFFFF" font-family="'Inter', system-ui, sans-serif" font-weight="900" font-size="22" letter-spacing="1.2">PRIME</text>
                             <text x="61" y="40" fill="#0ECB81" font-family="'Inter', system-ui, sans-serif" font-weight="700" font-size="9.5" letter-spacing="3.5">MARKETS</text>
                             <rect x="178" y="19" width="36" height="15" rx="4" fill="#0ECB81" fill-opacity="0.15" stroke="#0ECB81" stroke-width="0.8"/>
@@ -138,7 +131,7 @@
                     <i class="fa-solid fa-triangle-exclamation text-base text-red-500"></i>
                     <div>
                         <span class="font-semibold block">Falha na Autenticação</span>
-                        <span class="text-[11px] opacity-90">Por favor, preencha o e-mail e a senha corretamente.</span>
+                        <span id="login-error-text" class="text-[11px] opacity-90">E-mail ou senha incorretos. Verifique e tente novamente.</span>
                     </div>
                 </div>
 
@@ -183,8 +176,9 @@
 
                     <button 
                         type="submit" 
+                        id="btn-login"
                         class="w-full bg-[#0ECB81] hover:bg-[#10D88B] active:scale-[0.98] text-black font-bold py-3.5 rounded-xl text-sm transition shadow-lg shadow-emerald-500/20 mt-6 flex items-center justify-center gap-2">
-                        <span>Acessar Conta</span>
+                        <span id="btn-login-text">Acessar Conta</span>
                         <i class="fa-solid fa-arrow-right text-xs"></i>
                     </button>
                 </form>
@@ -245,10 +239,10 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="flex items-baseline gap-1.5">
-                            <span id="balance-amount" class="text-3xl font-bold tracking-tight text-white font-mono">93.859,03</span>
+                            <span id="balance-amount" class="text-3xl font-bold tracking-tight text-white font-mono">0,00</span>
                             <span id="balance-currency" class="text-lg font-bold text-[#0ECB81]">EUR</span>
                         </div>
-                        <div id="balance-usd" class="text-xs text-binance-grayText font-medium mt-1">≈ $102,118.62 USD</div>
+                        <div id="balance-usd" class="text-xs text-binance-grayText font-medium mt-1">≈ $0.00 USD</div>
                     </div>
                     
                     <button onclick="triggerToast('Direcionando para portal de Depósito')" class="bg-[#0ECB81] hover:bg-[#10D88B] active:scale-95 transition text-black font-bold text-xs px-5 py-2.5 rounded-xl shadow-md flex items-center gap-1.5">
@@ -260,7 +254,6 @@
 
             <!-- Grelha de Ações Rápidas (8 Ícones) -->
             <section class="px-3 py-4 grid grid-cols-4 gap-y-4 text-center border-b border-gray-800/40">
-                <!-- Depositar -->
                 <div onclick="triggerToast('Depositar Cripto/Fiat')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-[#0ECB81] text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-circle-arrow-down"></i>
@@ -268,7 +261,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">Depositar</span>
                 </div>
 
-                <!-- Levantar -->
                 <div onclick="triggerToast('Levantar Cripto/Fiat')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-emerald-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-circle-arrow-up"></i>
@@ -276,7 +268,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">Levantar</span>
                 </div>
 
-                <!-- Open Finance -->
                 <div onclick="triggerToast('Open Finance')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-500 text-lg group-hover:bg-[#2B313A] transition border border-red-500/30">
                         <i class="fa-solid fa-building-columns"></i>
@@ -284,7 +275,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">Open Finance</span>
                 </div>
 
-                <!-- Futuros -->
                 <div onclick="triggerToast('Mercados Futuros 100x')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-emerald-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-chart-line"></i>
@@ -292,7 +282,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">Futuros</span>
                 </div>
 
-                <!-- NFT -->
                 <div onclick="triggerToast('Marketplace NFT')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-teal-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-cubes"></i>
@@ -300,7 +289,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">NFT</span>
                 </div>
 
-                <!-- WOTD -->
                 <div onclick="triggerToast('Palavra do Dia WOTD')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-cyan-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-gamepad"></i>
@@ -308,7 +296,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">WOTD</span>
                 </div>
 
-                <!-- Bots de trading -->
                 <div onclick="triggerToast('Trading Bots AI Automáticos')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-emerald-300 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-robot"></i>
@@ -316,7 +303,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">Bots AI</span>
                 </div>
 
-                <!-- Más -->
                 <div onclick="triggerToast('Todos os Serviços')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-gray-300 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-ellipsis"></i>
@@ -327,7 +313,6 @@
 
             <!-- Separadores e Filtros de Mercado -->
             <div class="pt-3">
-                <!-- Tab Menu Horizontal -->
                 <div class="flex items-center gap-5 px-4 overflow-x-auto no-scrollbar text-xs font-bold text-binance-grayText border-b border-gray-800/40 pb-2">
                     <span class="cursor-pointer hover:text-white transition">Favoritos</span>
                     <div class="relative text-[#0ECB81] pb-2 cursor-pointer font-extrabold">
@@ -340,7 +325,6 @@
                     <i class="fa-solid fa-sliders ml-auto text-gray-400 text-xs"></i>
                 </div>
 
-                <!-- Sub-tabs Filtro -->
                 <div class="flex items-center gap-2 px-4 mt-3">
                     <button class="bg-[#2B313A] text-white text-[11px] font-bold px-3 py-1 rounded-lg border border-gray-700/50">
                         Criptomoneda
@@ -350,7 +334,6 @@
                     </button>
                 </div>
 
-                <!-- Cabeçalho Tabela Cripto -->
                 <div class="flex items-center justify-between px-4 mt-3.5 text-[10px] text-binance-grayText font-medium uppercase tracking-wider">
                     <span>Nombre</span>
                     <div class="flex items-center gap-14">
@@ -361,8 +344,6 @@
 
                 <!-- Lista de Criptomoedas -->
                 <div class="divide-y divide-gray-800/30 mt-1" id="crypto-list">
-
-                    <!-- BNB -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-bnb">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-[#0ECB81] flex items-center justify-center font-bold text-xs">
@@ -387,7 +368,6 @@
                         </div>
                     </div>
 
-                    <!-- BTC -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-btc">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-xs">
@@ -412,7 +392,6 @@
                         </div>
                     </div>
 
-                    <!-- ETH -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-eth">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs">
@@ -437,7 +416,6 @@
                         </div>
                     </div>
 
-                    <!-- PEPE -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-pepe">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
@@ -461,7 +439,6 @@
                         </div>
                     </div>
 
-                    <!-- SOL -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-sol">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">
@@ -484,7 +461,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -508,31 +484,26 @@
 
         <!-- Barra de Navegação Inferior (Fixa) -->
         <nav class="absolute bottom-0 left-0 right-0 bg-[#181A20] border-t border-gray-800/80 py-2.5 px-2 flex justify-between items-center z-10">
-            <!-- Inicio -->
             <button onclick="triggerToast('Início')" class="flex flex-col items-center gap-1 text-[#0ECB81] w-1/5">
                 <i class="fa-solid fa-house text-base"></i>
                 <span class="text-[10px] font-bold">Inicio</span>
             </button>
 
-            <!-- Mercados -->
             <button onclick="triggerToast('Mercados')" class="flex flex-col items-center gap-1 text-binance-grayText hover:text-white transition w-1/5">
                 <i class="fa-solid fa-chart-simple text-base"></i>
                 <span class="text-[10px] font-medium">Mercados</span>
             </button>
 
-            <!-- Trade -->
             <button onclick="triggerToast('Trade Spot')" class="flex flex-col items-center gap-1 text-binance-grayText hover:text-white transition w-1/5">
                 <i class="fa-solid fa-right-left text-base"></i>
                 <span class="text-[10px] font-medium">Trade</span>
             </button>
 
-            <!-- Futuros -->
             <button onclick="triggerToast('Futuros')" class="flex flex-col items-center gap-1 text-binance-grayText hover:text-white transition w-1/5">
                 <i class="fa-solid fa-newspaper text-base"></i>
                 <span class="text-[10px] font-medium">Futuros</span>
             </button>
 
-            <!-- Activos -->
             <button onclick="triggerToast('Carteiras & Ativos')" class="flex flex-col items-center gap-1 text-white transition w-1/5 relative">
                 <div class="relative">
                     <i class="fa-regular fa-folder-open text-base text-white"></i>
@@ -576,45 +547,115 @@
 
     </div>
 
-    <!-- Supabase JS Client CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- Script de Autenticação e Interatividade -->
+    <!-- Script de Configuração e Autenticação Supabase -->
     <script>
-        // Configuração do Supabase Client e Nomes de Banco
-        const SUPABASE_URL = "https://wohrcmpzirhfywsseasc.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvaHJjbXB6aXJoZnl3c3NlYXNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyNzU0NDQsImV4cCI6MjA1Njg1MTQ0NH0.aR4y7a-aZlhD220cM_Vf5uKzH7Bf8fK82K6hE2N-R58";
-        const SUPABASE_DB_NAME = "perfis"; // Nome do Schema/Tabela do projeto
+        // Configuração do Supabase Client
+        const SUPABASE_URL = 'https://wohrcmpzirhfywsseasc.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvaHJjbXB6aXJoZnl3c3NlYXNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTU0NTgsImV4cCI6MjEwNDM5MTQ1OH0.gU4A6xU4gtmWQST0nzLLiH1yCxebamwvw5nkAIE7vdI';
         
-        // Inicialização do cliente Supabase
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Lógica de Login (Qualquer entrada válida é aceita)
-        function handleLogin(e) {
+        // Guarda o saldo real do usuário logado
+        let currentUserBalance = 0;
+        let isBalanceVisible = true;
+
+        // Formatação de Saldo
+        function formatEUR(val) {
+            return Number(val).toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function formatUSD(val) {
+            const usd = val * 1.088; // cotação aproximada
+            return '≈ $' + Number(usd).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' USD';
+        }
+
+        function updateBalanceDisplay() {
+            const amountEl = document.getElementById('balance-amount');
+            const usdEl = document.getElementById('balance-usd');
+            const eyeIcon = document.getElementById('eye-icon');
+
+            if (isBalanceVisible) {
+                amountEl.textContent = formatEUR(currentUserBalance);
+                usdEl.textContent = formatUSD(currentUserBalance);
+                eyeIcon.className = 'fa-regular fa-eye text-gray-400';
+            } else {
+                amountEl.textContent = '••••••••';
+                usdEl.textContent = '••••••••';
+                eyeIcon.className = 'fa-regular fa-eye-slash text-gray-400';
+            }
+        }
+
+        // Função de Login consultando a tabela 'perfis'
+        async function handleLogin(e) {
             e.preventDefault();
             const emailInput = document.getElementById('login-email').value.trim();
             const passwordInput = document.getElementById('login-password').value.trim();
             const errorElement = document.getElementById('login-error');
+            const errorText = document.getElementById('login-error-text');
             const loginScreen = document.getElementById('login-screen');
+            const btnLoginText = document.getElementById('btn-login-text');
 
-            if (emailInput !== "" && passwordInput !== "") {
-                errorElement.classList.add('hidden');
-                
-                // Animação fluida de entrada
-                loginScreen.style.opacity = '0';
-                loginScreen.style.transform = 'scale(0.95)';
-                
-                setTimeout(() => {
-                    loginScreen.style.display = 'none';
-                    triggerToast("Login realizado com sucesso! Bem-vindo.");
-                }, 400);
-            } else {
-                errorElement.classList.remove('hidden');
-                errorElement.classList.add('shake-err');
-                setTimeout(() => {
-                    errorElement.classList.remove('shake-err');
-                }, 400);
+            // Feedback visual de carregamento
+            btnLoginText.textContent = 'A verificar...';
+
+            try {
+                // Consulta a tabela 'perfis' no Supabase
+                const { data, error } = await _supabase
+                    .from('perfis')
+                    .select('*')
+                    .ilike('Email', emailInput)
+                    .eq('Senha', passwordInput);
+
+                if (error) {
+                    console.error('Erro Supabase:', error);
+                    showError('Erro ao conectar ao banco de dados. Tente novamente.');
+                    btnLoginText.textContent = 'Acessar Conta';
+                    return;
+                }
+
+                if (data && data.length > 0) {
+                    const userProfile = data[0];
+                    currentUserBalance = parseFloat(userProfile.Saldo || 0);
+
+                    errorElement.classList.add('hidden');
+                    updateBalanceDisplay();
+
+                    // Animação de sucesso
+                    loginScreen.style.opacity = '0';
+                    loginScreen.style.transform = 'scale(0.95)';
+                    
+                    setTimeout(() => {
+                        loginScreen.style.display = 'none';
+                        showToast(`Bem-vindo, ${userProfile.Email}!`);
+                    }, 400);
+
+                } else {
+                    showError('E-mail ou senha incorretos. Verifique e tente novamente.');
+                    btnLoginText.textContent = 'Acessar Conta';
+                }
+
+            } catch (err) {
+                console.error('Exceção:', err);
+                showError('Erro de conexão. Tente novamente.');
+                btnLoginText.textContent = 'Acessar Conta';
             }
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('login-error');
+            const errorText = document.getElementById('login-error-text');
+            errorText.textContent = message;
+            errorElement.classList.remove('hidden');
+            errorElement.classList.add('shake-err');
+            setTimeout(() => {
+                errorElement.classList.remove('shake-err');
+            }, 400);
+        }
+
+        // Visibilidade do Saldo
+        function toggleBalanceVisibility() {
+            isBalanceVisible = !isBalanceVisible;
+            updateBalanceDisplay();
         }
 
         // Alternar Visibilidade da Senha
@@ -632,49 +673,34 @@
             }
         }
 
-        // Alternar Ocultação de Saldo Total
-        let isBalanceVisible = true;
-        function toggleBalanceVisibility() {
-            const amountEl = document.getElementById('balance-amount');
-            const currencyEl = document.getElementById('balance-currency');
-            const usdEl = document.getElementById('balance-usd');
-            const eyeIcon = document.getElementById('eye-icon');
-
-            if (isBalanceVisible) {
-                amountEl.textContent = '••••••••';
-                usdEl.textContent = '••••••••';
-                eyeIcon.classList.remove('fa-eye');
-                eyeIcon.classList.add('fa-eye-slash');
-                isBalanceVisible = false;
-            } else {
-                amountEl.textContent = '93.859,03';
-                usdEl.textContent = '≈ $102,118.62 USD';
-                eyeIcon.classList.remove('fa-eye-slash');
-                eyeIcon.classList.add('fa-eye');
-                isBalanceVisible = true;
-            }
-        }
-
-        // Função para Exibir o Alerta de Conta Bloqueada ao Tentar Acessar Funções
+        // Modais e Toasts
         function triggerToast(featureName) {
             showBlockedModal();
         }
 
+        function showToast(msg) {
+            const toast = document.getElementById('toast-msg');
+            const toastText = document.getElementById('toast-text');
+            if (toast && toastText) {
+                toastText.textContent = msg;
+                toast.classList.remove('hidden');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
         function showBlockedModal() {
             const modal = document.getElementById('blocked-modal');
-            if (modal) {
-                modal.classList.remove('hidden');
-            }
+            if (modal) modal.classList.remove('hidden');
         }
 
         function closeBlockedModal() {
             const modal = document.getElementById('blocked-modal');
-            if (modal) {
-                modal.classList.add('hidden');
-            }
+            if (modal) modal.classList.add('hidden');
         }
 
-        // Simulação Dinâmica de Preços em Tempo Real
+        // Simulação Dinâmica de Preços
         setInterval(() => {
             const btcElement = document.getElementById('btc-price');
             const btcRow = document.getElementById('row-btc');
@@ -684,13 +710,11 @@
                 const newPrice = basePrice + change;
                 btcElement.textContent = newPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 
-                // Efeito visual de variação
                 btcRow.classList.remove('flash-up', 'flash-down');
-                void btcRow.offsetWidth; // Trigger reflow
+                void btcRow.offsetWidth;
                 btcRow.classList.add(change >= 0 ? 'flash-up' : 'flash-down');
             }
         }, 3500);
     </script>
 </body>
 </html>
-
