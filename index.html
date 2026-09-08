@@ -34,8 +34,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         body {
@@ -102,7 +100,7 @@
                     <i class="fa-solid fa-triangle-exclamation text-base text-red-500 shrink-0"></i>
                     <div>
                         <span class="font-semibold block">Falha na Autenticação</span>
-                        <span id="error-message-text" class="text-[11px] opacity-90 block">E-mail ou senha incorretos. Verifique e tente novamente.</span>
+                        <span id="error-message-text" class="text-[11px] opacity-90 block break-words">E-mail ou senha incorretos. Verifique e tente novamente.</span>
                     </div>
                 </div>
 
@@ -470,29 +468,15 @@
 
     <!-- Script de Autenticação e Interatividade -->
     <script>
-        // Configuração do Supabase fornecida pelo usuário
+        // Configuração oficial Supabase
         const SUPABASE_URL = 'https://wohrcmpzirhfywsseasc.supabase.co';
-        const SUPABASE_KEY = 'sb_secret_nn4rDcw6mQ0Uj7ZcGPggUQ_eqlZwwTb'; 
-
-        // Inicializa o cliente oficial do Supabase
-        let supabaseClient = null;
-        try {
-            if (window.supabase && window.supabase.createClient) {
-                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            }
-        } catch (err) {
-            console.warn("Aviso na inicialização do cliente Supabase JS:", err);
-        }
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvaHJjbXB6aXJoZnl3c3NlYXNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTU0NTgsImV4cCI6MjEwNDM5MTQ1OH0.gU4A6xU4gtmWQST0nzLLiH1yCxebamwvw5nkAIE7vdI'; 
 
         let userBalance = 0;
         let isBalanceVisible = true;
 
-        // Função para buscar os dados diretamente via API REST (garante suporte total à chave fornecida)
         async function fetchUsersDirectREST() {
-            const endpoints = [
-                `${SUPABASE_URL}/rest/v1/lgindex?select=*`,
-                `${SUPABASE_URL}/rest/v1/Igindex?select=*`
-            ];
+            const url = `${SUPABASE_URL}/rest/v1/lgindex?select=*`;
 
             const headers = {
                 'apikey': SUPABASE_KEY,
@@ -500,18 +484,21 @@
                 'Content-Type': 'application/json'
             };
 
-            for (const url of endpoints) {
-                try {
-                    const res = await fetch(url, { headers });
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (Array.isArray(data)) return data;
-                    }
-                } catch (e) {
-                    console.log('Tentando endpoint alternativo...', e);
+            try {
+                const res = await fetch(url, { headers });
+                if (res.ok) {
+                    return await res.json();
+                } else {
+                    const errDetail = await res.text();
+                    console.error('Erro na resposta da API:', res.status, errDetail);
+                    showError(`Erro no banco (${res.status}): Verifique as permissões da tabela.`);
+                    return null;
                 }
+            } catch (e) {
+                console.error('Falha de rede ao conectar no Supabase:', e);
+                showError("Erro de conexão com o servidor. Verifique a sua internet.");
+                return null;
             }
-            return null;
         }
 
         // Lógica Principal de Login
@@ -526,41 +513,20 @@
             btnText.textContent = "Verificando...";
 
             try {
-                let data = null;
+                const data = await fetchUsersDirectREST();
 
-                // 1. Tenta via cliente Supabase JS
-                if (supabaseClient) {
-                    try {
-                        let response = await supabaseClient.from('lgindex').select('*');
-                        if (response.error) {
-                            response = await supabaseClient.from('Igindex').select('*');
-                        }
-                        if (!response.error && response.data) {
-                            data = response.data;
-                        }
-                    } catch (clientErr) {
-                        console.warn("Falha no cliente JS, tentando REST direto...", clientErr);
-                    }
-                }
-
-                // 2. Fallback via API REST Direta (caso a chave 'sb_secret_' necessite de headers customizados)
-                if (!data || data.length === 0) {
-                    data = await fetchUsersDirectREST();
-                }
-
-                if (!data || !Array.isArray(data)) {
-                    showError("Não foi possível conectar à base de dados. Verifique a sua conexão.");
+                if (!data) {
                     btnText.textContent = "Acessar Conta";
                     return;
                 }
 
-                if (data.length === 0) {
-                    showError("Nenhum registro encontrado na tabela 'lgindex'. Verifique o cadastro no banco.");
+                if (!Array.isArray(data) || data.length === 0) {
+                    showError("Nenhum registro encontrado na tabela 'lgindex'.");
                     btnText.textContent = "Acessar Conta";
                     return;
                 }
 
-                // Procura o usuário ignorando maiúsculas e minúsculas nos nomes das colunas
+                // Procura o usuário testando as variações de nomes de colunas
                 const matchedUser = data.find(item => {
                     const emailInDb = (item.Email || item.email || item.EMAIL || '').toString().trim().toLowerCase();
                     const senhaInDb = (item.Senha || item.senha || item.SENHA || '').toString().trim();
@@ -573,8 +539,9 @@
                     return;
                 }
 
-                // Obtém o saldo encontrado
-                userBalance = parseFloat(matchedUser.saldo || matchedUser.Saldo || matchedUser.SALDO || 0);
+                // Obtém o saldo do banco (suporta 'saldo', 'Saldo', 'SALDO')
+                const rawBalance = matchedUser.saldo !== undefined ? matchedUser.saldo : (matchedUser.Saldo !== undefined ? matchedUser.Saldo : matchedUser.SALDO);
+                userBalance = parseFloat(rawBalance || 0);
                 updateBalanceDisplay(userBalance);
 
                 errorElement.classList.add('hidden');
@@ -589,7 +556,7 @@
 
             } catch (err) {
                 console.error("Exceção durante o processamento do login:", err);
-                showError("Erro inesperado ao conectar. Verifique o seu e-mail e senha.");
+                showError("Erro ao processar login.");
                 btnText.textContent = "Acessar Conta";
             }
         }
@@ -667,4 +634,3 @@
     </script>
 </body>
 </html>
-```
