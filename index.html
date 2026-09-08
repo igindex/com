@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Binance Crypto App UI</title>
-    
+    <title>Crypto App UI - Tema Verde</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -13,8 +12,8 @@
                 extend: {
                     colors: {
                         binance: {
-                            yellow: '#F0B90B',
-                            hover: '#FCD535',
+                            greenPrimary: '#0ECB81',
+                            greenHover: '#10D88B',
                             dark: '#181A20',
                             card: '#1E2329',
                             green: '#0ECB81',
@@ -34,7 +33,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -76,14 +74,54 @@
         <!-- ==================== TELA DE LOGIN OVERLAY ==================== -->
         <div id="login-screen" class="absolute inset-0 z-50 bg-[#181A20] flex flex-col justify-between p-6 overflow-y-auto transition-all duration-500">
             <div>
-                <!-- Topbar do Login -->
+                <!-- Topbar do Login com Logo Integrada diretamente no HTML (SVG) -->
                 <div class="flex items-center justify-between mt-2 mb-8">
                     <div class="flex items-center gap-2">
-                        <!-- Logo Oficial Binance SVG -->
-                        <svg class="w-8 h-8 text-[#F0B90B]" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2L6.5 7.5L9.3 10.3L12 7.6L14.7 10.3L17.5 7.5L12 2ZM6.5 16.5L12 22L17.5 16.5L14.7 13.7L12 16.4L9.3 13.7L6.5 16.5ZM2 12L7.5 17.5L10.3 14.7L7.6 12L10.3 9.3L7.5 6.5L2 12ZM22 12L16.5 6.5L13.7 9.3L16.4 12L13.7 14.7L16.5 17.5L22 12ZM12 9.8L9.8 12L12 14.2L14.2 12L12 9.8Z"/>
+                        <!-- Logo 100% embutida em HTML (Estilo Premium Crypto / Exchange) -->
+                        <svg class="h-11 w-auto" viewBox="0 0 240 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="prime_bg" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#1E2329"/>
+                                    <stop offset="100%" stop-color="#0F1215"/>
+                                </linearGradient>
+                                <linearGradient id="prime_emerald" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#0ECB81"/>
+                                    <stop offset="100%" stop-color="#059669"/>
+                                </linearGradient>
+                                <linearGradient id="prime_cyan" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#34D399"/>
+                                    <stop offset="100%" stop-color="#06B6D4"/>
+                                </linearGradient>
+                                <linearGradient id="stroke_glow" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#0ECB81"/>
+                                    <stop offset="50%" stop-color="#10B981" stop-opacity="0.3"/>
+                                    <stop offset="100%" stop-color="#047857" stop-opacity="0.8"/>
+                                </linearGradient>
+                                <filter id="neon_glow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feGaussianBlur stdDeviation="2.5" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                                </filter>
+                            </defs>
+
+                            <!-- Frame com Borda de Brilho -->
+                            <rect x="1" y="1" width="46" height="46" rx="14" fill="url(#prime_bg)" stroke="url(#stroke_glow)" stroke-width="1.5"/>
+                            
+                            <!-- Geometria Isométrica 3D do 'P' Lapidado -->
+                            <!-- Faceta Superior/Esquerda -->
+                            <path d="M24 8L37 15.5V23.5L24 16L11 23.5V15.5L24 8Z" fill="url(#prime_cyan)"/>
+                            <!-- Faceta Direita (P Form/Loop) -->
+                            <path d="M24 16L37 23.5V31.5L24 24V16Z" fill="url(#prime_emerald)"/>
+                            <!-- Faceta Inferior/Haste Esquerda -->
+                            <path d="M11 23.5L24 31.5V39.5L11 31.5V23.5Z" fill="#059669"/>
+                            <!-- Núcleo Luminoso Central -->
+                            <circle cx="24" cy="24" r="3.5" fill="#FFFFFF" filter="url(#neon_glow)"/>
+
+                            <!-- Tipografia PRIME MARKETS -->
+                            <text x="60" y="28" fill="#FFFFFF" font-family="'Inter', system-ui, sans-serif" font-weight="900" font-size="22" letter-spacing="1.2">PRIME</text>
+                            <text x="61" y="40" fill="#0ECB81" font-family="'Inter', system-ui, sans-serif" font-weight="700" font-size="9.5" letter-spacing="3.5">MARKETS</text>
+                            <rect x="178" y="19" width="36" height="15" rx="4" fill="#0ECB81" fill-opacity="0.15" stroke="#0ECB81" stroke-width="0.8"/>
+                            <text x="183" y="30" fill="#0ECB81" font-family="'Inter', system-ui, sans-serif" font-weight="800" font-size="8" letter-spacing="0.5">PRO</text>
                         </svg>
-                        <span class="font-extrabold text-xl tracking-wider text-white">BINANCE</span>
                     </div>
                     <button class="w-9 h-9 rounded-full bg-[#2B313A] flex items-center justify-center text-gray-400 hover:text-white transition">
                         <i class="fa-solid fa-headset text-sm"></i>
@@ -97,10 +135,10 @@
 
                 <!-- Alerta de Erro -->
                 <div id="login-error" class="hidden mb-5 p-3.5 bg-red-950/60 border border-red-500/40 rounded-xl flex items-center gap-3 text-red-400 text-xs">
-                    <i class="fa-solid fa-triangle-exclamation text-base text-red-500 shrink-0"></i>
+                    <i class="fa-solid fa-triangle-exclamation text-base text-red-500"></i>
                     <div>
                         <span class="font-semibold block">Falha na Autenticação</span>
-                        <span id="error-message-text" class="text-[11px] opacity-90 block break-words">E-mail ou senha incorretos. Verifique e tente novamente.</span>
+                        <span class="text-[11px] opacity-90">E-mail ou senha incorretos. Verifique e tente novamente.</span>
                     </div>
                 </div>
 
@@ -114,7 +152,7 @@
                                 id="login-email" 
                                 placeholder="E-mail ou Telefone" 
                                 required
-                                class="w-full px-4 py-3.5 text-sm bg-[#2B313A]/50 border border-gray-700/60 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#F0B90B] focus:bg-[#2B313A] transition"
+                                class="w-full px-4 py-3.5 text-sm bg-[#2B313A]/50 border border-gray-700/60 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#0ECB81] focus:bg-[#2B313A] transition"
                             >
                         </div>
                     </div>
@@ -127,7 +165,7 @@
                                 id="login-password" 
                                 placeholder="••••••••" 
                                 required
-                                class="w-full px-4 py-3.5 text-sm bg-[#2B313A]/50 border border-gray-700/60 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#F0B90B] focus:bg-[#2B313A] transition"
+                                class="w-full px-4 py-3.5 text-sm bg-[#2B313A]/50 border border-gray-700/60 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#0ECB81] focus:bg-[#2B313A] transition"
                             >
                             <button type="button" onclick="togglePasswordVisibility()" class="absolute right-4 top-3.5 text-gray-400 hover:text-white transition">
                                 <i class="fa-regular fa-eye" id="password-toggle-icon"></i>
@@ -137,25 +175,24 @@
 
                     <div class="flex justify-between items-center text-xs pt-1">
                         <label class="flex items-center gap-2 cursor-pointer text-binance-grayText hover:text-gray-300">
-                            <input type="checkbox" checked class="rounded bg-gray-800 border-gray-700 text-[#F0B90B] focus:ring-0">
+                            <input type="checkbox" checked class="rounded bg-gray-800 border-gray-700 text-[#0ECB81] focus:ring-0">
                             <span>Lembrar dispositivo</span>
                         </label>
-                        <span class="text-[#F0B90B] font-medium cursor-pointer hover:underline">Esqueceu a senha?</span>
+                        <span class="text-[#0ECB81] font-medium cursor-pointer hover:underline">Esqueceu a senha?</span>
                     </div>
 
                     <button 
                         type="submit" 
-                        id="btn-submit"
-                        class="w-full bg-[#F0B90B] hover:bg-[#FCD535] active:scale-[0.98] text-black font-bold py-3.5 rounded-xl text-sm transition shadow-lg shadow-amber-500/10 mt-6 flex items-center justify-center gap-2">
-                        <span id="btn-text">Acessar Conta</span>
-                        <i class="fa-solid fa-arrow-right text-xs" id="btn-icon"></i>
+                        class="w-full bg-[#0ECB81] hover:bg-[#10D88B] active:scale-[0.98] text-black font-bold py-3.5 rounded-xl text-sm transition shadow-lg shadow-emerald-500/20 mt-6 flex items-center justify-center gap-2">
+                        <span>Acessar Conta</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
                     </button>
                 </form>
             </div>
 
             <!-- Rodapé Login -->
             <div class="text-center text-[11px] text-binance-grayText pt-4 border-t border-gray-800/60">
-                <span>Protegido por Binance Security Shield 3.0</span>
+                <span>Protegido por Security Shield 3.0</span>
             </div>
         </div>
 
@@ -168,10 +205,10 @@
                     <i class="fa-solid fa-bars text-sm"></i>
                 </button>
                 
-                <!-- Search Bar estilo Binance -->
+                <!-- Search Bar -->
                 <div class="flex-1 mx-1 bg-[#2B313A]/60 rounded-full py-1.5 px-3.5 flex items-center gap-2 text-gray-400 text-xs border border-gray-700/30">
-                    <span class="text-amber-400 font-semibold text-[11px] flex items-center gap-1 bg-amber-400/10 px-2 py-0.5 rounded-full">
-                        <i class="fa-solid fa-fire text-amber-500"></i> LQTY
+                    <span class="text-emerald-400 font-semibold text-[11px] flex items-center gap-1 bg-emerald-400/10 px-2 py-0.5 rounded-full">
+                        <i class="fa-solid fa-fire text-emerald-500"></i> LQTY
                     </span>
                     <span class="text-gray-500">| Buscar cripto...</span>
                     <div class="flex-1"></div>
@@ -182,7 +219,7 @@
                 <div class="flex items-center gap-2.5 text-gray-300">
                     <div class="relative cursor-pointer p-1">
                         <i class="fa-regular fa-comment-dots text-lg"></i>
-                        <span class="absolute -top-1 -right-1 bg-[#F0B90B] text-black font-extrabold text-[9px] px-1 rounded-full border border-[#181A20]">
+                        <span class="absolute -top-1 -right-1 bg-[#0ECB81] text-black font-extrabold text-[9px] px-1 rounded-full border border-[#181A20]">
                             99+
                         </span>
                     </div>
@@ -208,42 +245,46 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="flex items-baseline gap-1.5">
-                            <span id="balance-amount" class="text-3xl font-bold tracking-tight text-white font-mono">0,00</span>
-                            <span id="balance-currency" class="text-lg font-bold text-[#F0B90B]">EUR</span>
+                            <span id="balance-amount" class="text-3xl font-bold tracking-tight text-white font-mono">93.859,03</span>
+                            <span id="balance-currency" class="text-lg font-bold text-[#0ECB81]">EUR</span>
                         </div>
-                        <div id="balance-usd" class="text-xs text-binance-grayText font-medium mt-1">≈ $0.00 USD</div>
+                        <div id="balance-usd" class="text-xs text-binance-grayText font-medium mt-1">≈ $102,118.62 USD</div>
                     </div>
                     
-                    <button onclick="triggerToast('Direcionando para portal de Depósito')" class="bg-[#F0B90B] hover:bg-[#FCD535] active:scale-95 transition text-black font-bold text-xs px-5 py-2.5 rounded-xl shadow-md flex items-center gap-1.5">
+                    <button onclick="triggerToast('Direcionando para portal de Depósito')" class="bg-[#0ECB81] hover:bg-[#10D88B] active:scale-95 transition text-black font-bold text-xs px-5 py-2.5 rounded-xl shadow-md flex items-center gap-1.5">
                         <i class="fa-solid fa-plus text-xs"></i>
                         <span>Depositar</span>
                     </button>
                 </div>
             </section>
 
-            <!-- Grelha de Ações Rápidas -->
+            <!-- Grelha de Ações Rápidas (8 Ícones) -->
             <section class="px-3 py-4 grid grid-cols-4 gap-y-4 text-center border-b border-gray-800/40">
+                <!-- Depositar -->
                 <div onclick="triggerToast('Depositar Cripto/Fiat')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
-                    <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-[#F0B90B] text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
+                    <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-[#0ECB81] text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-circle-arrow-down"></i>
                     </div>
                     <span class="text-[11px] text-gray-300 font-medium">Depositar</span>
                 </div>
 
-                <div onclick="triggerToast('Programa de Referidos')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
-                    <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-amber-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
-                        <i class="fa-solid fa-user-plus"></i>
+                <!-- Levantar -->
+                <div onclick="triggerToast('Levantar Cripto/Fiat')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
+                    <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-emerald-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
+                        <i class="fa-solid fa-circle-arrow-up"></i>
                     </div>
-                    <span class="text-[11px] text-gray-300 font-medium">Referido</span>
+                    <span class="text-[11px] text-gray-300 font-medium">Levantar</span>
                 </div>
 
-                <div onclick="triggerToast('Binance Live Transmissão')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
-                    <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-red-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
-                        <i class="fa-solid fa-video"></i>
+                <!-- Open Finance -->
+                <div onclick="triggerToast('Open Finance')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
+                    <div class="w-11 h-11 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-500 text-lg group-hover:bg-[#2B313A] transition border border-red-500/30">
+                        <i class="fa-solid fa-building-columns"></i>
                     </div>
-                    <span class="text-[11px] text-gray-300 font-medium">vivo</span>
+                    <span class="text-[11px] text-gray-300 font-medium">Open Finance</span>
                 </div>
 
+                <!-- Futuros -->
                 <div onclick="triggerToast('Mercados Futuros 100x')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-emerald-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-chart-line"></i>
@@ -251,42 +292,47 @@
                     <span class="text-[11px] text-gray-300 font-medium">Futuros</span>
                 </div>
 
+                <!-- NFT -->
                 <div onclick="triggerToast('Marketplace NFT')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
-                    <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-purple-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
+                    <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-teal-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-cubes"></i>
                     </div>
-                    <span class="text-[11px] text-gray-300 font-medium">Binance NFT</span>
+                    <span class="text-[11px] text-gray-300 font-medium">NFT</span>
                 </div>
 
+                <!-- WOTD -->
                 <div onclick="triggerToast('Palavra do Dia WOTD')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
-                    <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-blue-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
+                    <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-cyan-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-gamepad"></i>
                     </div>
                     <span class="text-[11px] text-gray-300 font-medium">WOTD</span>
                 </div>
 
+                <!-- Bots de trading -->
                 <div onclick="triggerToast('Trading Bots AI Automáticos')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
-                    <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-cyan-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
+                    <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-emerald-300 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-robot"></i>
                     </div>
-                    <span class="text-[11px] text-gray-300 font-medium">Bots de trading</span>
+                    <span class="text-[11px] text-gray-300 font-medium">Bots AI</span>
                 </div>
 
+                <!-- Más -->
                 <div onclick="triggerToast('Todos os Serviços')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-gray-300 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-ellipsis"></i>
                     </div>
-                    <span class="text-[11px] text-gray-300 font-medium">Más</span>
+                    <span class="text-[11px] text-gray-300 font-medium">Mais</span>
                 </div>
             </section>
 
             <!-- Separadores e Filtros de Mercado -->
             <div class="pt-3">
+                <!-- Tab Menu Horizontal -->
                 <div class="flex items-center gap-5 px-4 overflow-x-auto no-scrollbar text-xs font-bold text-binance-grayText border-b border-gray-800/40 pb-2">
                     <span class="cursor-pointer hover:text-white transition">Favoritos</span>
-                    <div class="relative text-[#F0B90B] pb-2 cursor-pointer font-extrabold">
+                    <div class="relative text-[#0ECB81] pb-2 cursor-pointer font-extrabold">
                         <span>Popular</span>
-                        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#F0B90B] rounded-full"></div>
+                        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0ECB81] rounded-full"></div>
                     </div>
                     <span class="cursor-pointer hover:text-white transition">Alpha</span>
                     <span class="cursor-pointer hover:text-white transition">Nuevo</span>
@@ -294,6 +340,7 @@
                     <i class="fa-solid fa-sliders ml-auto text-gray-400 text-xs"></i>
                 </div>
 
+                <!-- Sub-tabs Filtro -->
                 <div class="flex items-center gap-2 px-4 mt-3">
                     <button class="bg-[#2B313A] text-white text-[11px] font-bold px-3 py-1 rounded-lg border border-gray-700/50">
                         Criptomoneda
@@ -303,6 +350,7 @@
                     </button>
                 </div>
 
+                <!-- Cabeçalho Tabela Cripto -->
                 <div class="flex items-center justify-between px-4 mt-3.5 text-[10px] text-binance-grayText font-medium uppercase tracking-wider">
                     <span>Nombre</span>
                     <div class="flex items-center gap-14">
@@ -314,30 +362,32 @@
                 <!-- Lista de Criptomoedas -->
                 <div class="divide-y divide-gray-800/30 mt-1" id="crypto-list">
 
+                    <!-- BNB -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-bnb">
                         <div class="flex items-center gap-2.5">
-                            <div class="w-7 h-7 rounded-full bg-amber-500/20 text-[#F0B90B] flex items-center justify-center font-bold text-xs">
+                            <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-[#0ECB81] flex items-center justify-center font-bold text-xs">
                                 <i class="fa-solid fa-coins"></i>
                             </div>
                             <div>
                                 <div class="flex items-center gap-1">
                                     <span class="font-bold text-white text-sm">BNB</span>
-                                    <i class="fa-solid fa-fire text-[#F0B90B] text-[10px]"></i>
+                                    <i class="fa-solid fa-fire text-[#0ECB81] text-[10px]"></i>
                                 </div>
                                 <span class="text-[10px] text-binance-grayText">BNB Chain</span>
                             </div>
                         </div>
                         <div class="flex items-center justify-between w-3/5">
                             <div class="text-right">
-                                <div class="font-semibold text-white text-xs font-mono" id="bnb-price">671.31</div>
-                                <div class="text-[10px] text-binance-grayText font-mono">$671.31</div>
+                                <div class="font-semibold text-white text-xs font-mono" id="bnb-price">685.40</div>
+                                <div class="text-[10px] text-binance-grayText font-mono">$685.40</div>
                             </div>
-                            <div class="bg-binance-green text-white font-bold text-xs py-1.5 px-3 rounded-lg w-20 text-center shadow-sm">
-                                +1.25%
+                            <div class="bg-[#0ECB81] text-white font-bold text-xs py-1.5 px-3 rounded-lg w-20 text-center shadow-sm">
+                                +1.85%
                             </div>
                         </div>
                     </div>
 
+                    <!-- BTC -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-btc">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-xs">
@@ -346,22 +396,23 @@
                             <div>
                                 <div class="flex items-center gap-1">
                                     <span class="font-bold text-white text-sm">BTC</span>
-                                    <i class="fa-solid fa-fire text-amber-500 text-[10px]"></i>
+                                    <i class="fa-solid fa-fire text-emerald-500 text-[10px]"></i>
                                 </div>
                                 <span class="text-[10px] text-binance-grayText">Bitcoin</span>
                             </div>
                         </div>
                         <div class="flex items-center justify-between w-3/5">
                             <div class="text-right">
-                                <div class="font-semibold text-white text-xs font-mono" id="btc-price">106,355.24</div>
-                                <div class="text-[10px] text-binance-grayText font-mono">$106,355.24</div>
+                                <div class="font-semibold text-white text-xs font-mono" id="btc-price">81,416.00</div>
+                                <div class="text-[10px] text-binance-grayText font-mono">$81,416.00</div>
                             </div>
-                            <div class="bg-binance-green text-white font-bold text-xs py-1.5 px-3 rounded-lg w-20 text-center shadow-sm">
-                                +0.80%
+                            <div class="bg-[#0ECB81] text-white font-bold text-xs py-1.5 px-3 rounded-lg w-20 text-center shadow-sm">
+                                +2.45%
                             </div>
                         </div>
                     </div>
 
+                    <!-- ETH -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-eth">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs">
@@ -370,18 +421,66 @@
                             <div>
                                 <div class="flex items-center gap-1">
                                     <span class="font-bold text-white text-sm">ETH</span>
-                                    <i class="fa-solid fa-fire text-amber-500 text-[10px]"></i>
+                                    <i class="fa-solid fa-fire text-emerald-500 text-[10px]"></i>
                                 </div>
                                 <span class="text-[10px] text-binance-grayText">Ethereum</span>
                             </div>
                         </div>
                         <div class="flex items-center justify-between w-3/5">
                             <div class="text-right">
-                                <div class="font-semibold text-white text-xs font-mono" id="eth-price">2,626.71</div>
-                                <div class="text-[10px] text-binance-grayText font-mono">$2,626.71</div>
+                                <div class="font-semibold text-white text-xs font-mono" id="eth-price">2,450.80</div>
+                                <div class="text-[10px] text-binance-grayText font-mono">$2,450.80</div>
                             </div>
-                            <div class="bg-binance-green text-white font-bold text-xs py-1.5 px-3 rounded-lg w-20 text-center shadow-sm">
-                                +3.50%
+                            <div class="bg-[#0ECB81] text-white font-bold text-xs py-1.5 px-3 rounded-lg w-20 text-center shadow-sm">
+                                +1.12%
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PEPE -->
+                    <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-pepe">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-frog"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-1">
+                                    <span class="font-bold text-white text-sm">PEPE</span>
+                                </div>
+                                <span class="text-[10px] text-binance-grayText">Pepe Token</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between w-3/5">
+                            <div class="text-right">
+                                <div class="font-semibold text-white text-xs font-mono" id="pepe-price">0.00001185</div>
+                                <div class="text-[10px] text-binance-grayText font-mono">$0.00001185</div>
+                            </div>
+                            <div class="bg-[#0ECB81] text-white font-bold text-xs py-1.5 px-3 rounded-lg w-20 text-center shadow-sm">
+                                +5.30%
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SOL -->
+                    <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-sol">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-1">
+                                    <span class="font-bold text-white text-sm">SOL</span>
+                                </div>
+                                <span class="text-[10px] text-binance-grayText">Solana</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between w-3/5">
+                            <div class="text-right">
+                                <div class="font-semibold text-white text-xs font-mono" id="sol-price">198.30</div>
+                                <div class="text-[10px] text-binance-grayText font-mono">$198.30</div>
+                            </div>
+                            <div class="bg-[#0ECB81] text-white font-bold text-xs py-1.5 px-3 rounded-lg w-20 text-center shadow-sm">
+                                +3.15%
                             </div>
                         </div>
                     </div>
@@ -389,14 +488,14 @@
                 </div>
             </div>
 
-            <!-- Feed Descubre -->
+            <!-- Feed Descubre / Noticias -->
             <div class="mt-4 border-t border-gray-800/40 pt-3 px-4 pb-4">
                 <div class="flex items-center justify-between text-xs font-bold text-binance-grayText">
                     <div class="flex items-center gap-4">
                         <span class="text-white cursor-pointer">Descubre</span>
                         <div class="relative flex items-center gap-1 cursor-pointer">
                             <span class="hover:text-white">Siguiendo</span>
-                            <span class="w-1.5 h-1.5 bg-[#F0B90B] rounded-full"></span>
+                            <span class="w-1.5 h-1.5 bg-[#0ECB81] rounded-full"></span>
                         </div>
                         <span class="cursor-pointer hover:text-white">Noticias</span>
                         <span class="cursor-pointer hover:text-white">Anuncios</span>
@@ -407,41 +506,52 @@
 
         </div>
 
-        <!-- Barra de Navegação Inferior -->
+        <!-- Barra de Navegação Inferior (Fixa) -->
         <nav class="absolute bottom-0 left-0 right-0 bg-[#181A20] border-t border-gray-800/80 py-2.5 px-2 flex justify-between items-center z-10">
-            <button onclick="triggerToast('Início')" class="flex flex-col items-center gap-1 text-[#F0B90B] w-1/5">
+            <!-- Inicio -->
+            <button onclick="triggerToast('Início')" class="flex flex-col items-center gap-1 text-[#0ECB81] w-1/5">
                 <i class="fa-solid fa-house text-base"></i>
                 <span class="text-[10px] font-bold">Inicio</span>
             </button>
 
+            <!-- Mercados -->
             <button onclick="triggerToast('Mercados')" class="flex flex-col items-center gap-1 text-binance-grayText hover:text-white transition w-1/5">
                 <i class="fa-solid fa-chart-simple text-base"></i>
                 <span class="text-[10px] font-medium">Mercados</span>
             </button>
 
+            <!-- Trade -->
             <button onclick="triggerToast('Trade Spot')" class="flex flex-col items-center gap-1 text-binance-grayText hover:text-white transition w-1/5">
                 <i class="fa-solid fa-right-left text-base"></i>
                 <span class="text-[10px] font-medium">Trade</span>
             </button>
 
+            <!-- Futuros -->
             <button onclick="triggerToast('Futuros')" class="flex flex-col items-center gap-1 text-binance-grayText hover:text-white transition w-1/5">
                 <i class="fa-solid fa-newspaper text-base"></i>
                 <span class="text-[10px] font-medium">Futuros</span>
             </button>
 
+            <!-- Activos -->
             <button onclick="triggerToast('Carteiras & Ativos')" class="flex flex-col items-center gap-1 text-white transition w-1/5 relative">
                 <div class="relative">
                     <i class="fa-regular fa-folder-open text-base text-white"></i>
-                    <span class="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-[#F0B90B] rounded-full"></span>
+                    <span class="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-[#0ECB81] rounded-full"></span>
                 </div>
                 <span class="text-[10px] font-bold text-white">Activos</span>
             </button>
         </nav>
 
+        <!-- Elemento Toast Flutuante -->
+        <div id="toast-msg" class="hidden absolute top-16 left-1/2 transform -translate-x-1/2 z-50 bg-gray-900/90 border border-emerald-500/30 text-emerald-400 text-xs px-4 py-2 rounded-full shadow-2xl backdrop-blur-md flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-xs"></i>
+            <span id="toast-text">Notificação</span>
+        </div>
+
         <!-- Modal de Conta Bloqueada -->
         <div id="blocked-modal" class="hidden absolute inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-5 text-center">
-            <div class="bg-[#1E2329] border border-amber-500/30 rounded-2xl p-6 max-w-xs w-full shadow-2xl flex flex-col items-center">
-                <div class="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4 text-amber-400 text-2xl">
+            <div class="bg-[#1E2329] border border-emerald-500/30 rounded-2xl p-6 max-w-xs w-full shadow-2xl flex flex-col items-center">
+                <div class="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 text-emerald-400 text-2xl">
                     <i class="fa-solid fa-lock"></i>
                 </div>
                 
@@ -455,10 +565,10 @@
                 
                 <p class="text-xs text-gray-400 leading-relaxed mb-5">
                     O acesso será restabelecido após a conclusão do procedimento.<br>
-                    <span class="font-semibold text-amber-400 block mt-2">Estado: Em recuperação ⏳</span>
+                    <span class="font-semibold text-emerald-400 block mt-2">Estado: Em recuperação ⏳</span>
                 </p>
                 
-                <button onclick="closeBlockedModal()" class="w-full bg-[#F0B90B] hover:bg-[#FCD535] active:scale-95 text-black font-bold py-3 rounded-xl text-xs transition shadow-md">
+                <button onclick="closeBlockedModal()" class="w-full bg-[#0ECB81] hover:bg-[#10D88B] active:scale-95 text-black font-bold py-3 rounded-xl text-xs transition shadow-md">
                     Entendido
                 </button>
             </div>
@@ -466,144 +576,50 @@
 
     </div>
 
+    <!-- Supabase JS Client CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <!-- Script de Autenticação e Interatividade -->
     <script>
-        // Configuração oficial Supabase
-        const SUPABASE_URL = 'https://wohrcmpzirhfywsseasc.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvaHJjbXB6aXJoZnl3c3NlYXNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTU0NTgsImV4cCI6MjEwNDM5MTQ1OH0.gU4A6xU4gtmWQST0nzLLiH1yCxebamwvw5nkAIE7vdI'; 
+        // Configuração do Supabase Client
+        const SUPABASE_URL = "https://wohrcmpzirhfywsseasc.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvaHJjbXB6aXJoZnl3c3NlYXNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyNzU0NDQsImV4cCI6MjA1Njg1MTQ0NH0.aR4y7a-aZlhD220cM_Vf5uKzH7Bf8fK82K6hE2N-R58";
+        
+        // Inicialização do cliente Supabase
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let userBalance = 0;
-        let isBalanceVisible = true;
-
-        // Função genérica para buscar dados de qualquer tabela no Supabase
-        async function fetchFromTable(tableName) {
-            const url = `${SUPABASE_URL}/rest/v1/${tableName}?select=*`;
-            const headers = {
-                'apikey': SUPABASE_KEY,
-                'Authorization': `Bearer ${SUPABASE_KEY}`,
-                'Content-Type': 'application/json'
-            };
-
-            try {
-                const res = await fetch(url, { headers });
-                if (res.ok) {
-                    const json = await res.json();
-                    return Array.isArray(json) ? json : [];
-                } else {
-                    console.warn(`Aviso ao consultar ${tableName}: HTTP ${res.status}`);
-                    return [];
-                }
-            } catch (e) {
-                console.error(`Erro na requisição da tabela ${tableName}:`, e);
-                return [];
-            }
-        }
-
-        // Busca os usuários tanto da tabela 'lgindex' quanto da nova tabela 'perfis'
-        async function fetchUsersDirectREST() {
-            try {
-                const [dataLgindex, dataPerfis] = await Promise.all([
-                    fetchFromTable('lgindex'),
-                    fetchFromTable('perfis')
-                ]);
-
-                // Junta os registros das duas tabelas num único array
-                return [...dataLgindex, ...dataPerfis];
-            } catch (e) {
-                console.error('Falha de rede ao conectar no Supabase:', e);
-                showError("Erro de conexão com o servidor. Verifique a sua internet.");
-                return null;
-            }
-        }
-
-        // Lógica Principal de Login
-        async function handleLogin(e) {
+        // Lógica de Login
+        function handleLogin(e) {
             e.preventDefault();
-            const emailInput = document.getElementById('login-email').value.trim().toLowerCase();
+            const emailInput = document.getElementById('login-email').value.trim();
             const passwordInput = document.getElementById('login-password').value.trim();
             const errorElement = document.getElementById('login-error');
             const loginScreen = document.getElementById('login-screen');
-            const btnText = document.getElementById('btn-text');
 
-            btnText.textContent = "Verificando...";
+            const validEmail = "TESTE123@GMAIL.COM";
+            const validPassword = "123456";
 
-            try {
-                const data = await fetchUsersDirectREST();
-
-                if (!data) {
-                    btnText.textContent = "Acessar Conta";
-                    return;
-                }
-
-                if (!Array.isArray(data) || data.length === 0) {
-                    showError("Nenhum registro encontrado nas tabelas 'lgindex' ou 'perfis'.");
-                    btnText.textContent = "Acessar Conta";
-                    return;
-                }
-
-                // Procura o usuário testando as variações de nomes de colunas das tabelas
-                const matchedUser = data.find(item => {
-                    const emailInDb = (item.Email || item.email || item.EMAIL || item.usuario || item.user || '').toString().trim().toLowerCase();
-                    const senhaInDb = (item.Senha || item.senha || item.SENHA || item.password || item.pass || '').toString().trim();
-                    return emailInDb === emailInput && senhaInDb === passwordInput;
-                });
-
-                if (!matchedUser) {
-                    showError("E-mail ou senha incorretos. Verifique e tente novamente.");
-                    btnText.textContent = "Acessar Conta";
-                    return;
-                }
-
-                // Obtém o saldo do banco (suporta variações: 'saldo', 'Saldo', 'SALDO', 'balance')
-                const rawBalance = matchedUser.saldo !== undefined ? matchedUser.saldo : 
-                                  (matchedUser.Saldo !== undefined ? matchedUser.Saldo : 
-                                  (matchedUser.SALDO !== undefined ? matchedUser.SALDO : 
-                                  (matchedUser.balance !== undefined ? matchedUser.balance : matchedUser.Balance)));
-
-                userBalance = parseFloat(rawBalance || 0);
-                updateBalanceDisplay(userBalance);
-
+            if (emailInput.toUpperCase() === validEmail && passwordInput === validPassword) {
                 errorElement.classList.add('hidden');
                 
-                // Animação de entrada na conta
+                // Animação fluida de entrada
                 loginScreen.style.opacity = '0';
                 loginScreen.style.transform = 'scale(0.95)';
                 
                 setTimeout(() => {
                     loginScreen.style.display = 'none';
+                    triggerToast("Login realizado com sucesso! Bem-vindo.");
                 }, 400);
-
-            } catch (err) {
-                console.error("Exceção durante o processamento do login:", err);
-                showError("Erro ao processar login.");
-                btnText.textContent = "Acessar Conta";
+            } else {
+                errorElement.classList.remove('hidden');
+                errorElement.classList.add('shake-err');
+                setTimeout(() => {
+                    errorElement.classList.remove('shake-err');
+                }, 400);
             }
         }
 
-        function showError(msg) {
-            const errorElement = document.getElementById('login-error');
-            const errorText = document.getElementById('error-message-text');
-            errorText.textContent = msg;
-            errorElement.classList.remove('hidden');
-            errorElement.classList.add('shake-err');
-            setTimeout(() => {
-                errorElement.classList.remove('shake-err');
-            }, 400);
-        }
-
-        function updateBalanceDisplay(amount) {
-            const amountEl = document.getElementById('balance-amount');
-            const usdEl = document.getElementById('balance-usd');
-            
-            const formattedEUR = amount.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            const estimatedUSD = (amount * 1.08).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-            if (isBalanceVisible) {
-                amountEl.textContent = formattedEUR;
-                usdEl.textContent = `≈ $${estimatedUSD} USD`;
-            }
-        }
-
+        // Alternar Visibilidade da Senha
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('login-password');
             const icon = document.getElementById('password-toggle-icon');
@@ -618,8 +634,11 @@
             }
         }
 
+        // Alternar Ocultação de Saldo Total
+        let isBalanceVisible = true;
         function toggleBalanceVisibility() {
             const amountEl = document.getElementById('balance-amount');
+            const currencyEl = document.getElementById('balance-currency');
             const usdEl = document.getElementById('balance-usd');
             const eyeIcon = document.getElementById('eye-icon');
 
@@ -630,26 +649,49 @@
                 eyeIcon.classList.add('fa-eye-slash');
                 isBalanceVisible = false;
             } else {
-                updateBalanceDisplay(userBalance);
+                amountEl.textContent = '93.859,03';
+                usdEl.textContent = '≈ $102,118.62 USD';
                 eyeIcon.classList.remove('fa-eye-slash');
                 eyeIcon.classList.add('fa-eye');
                 isBalanceVisible = true;
             }
         }
 
+        // Função para Exibir o Alerta de Conta Bloqueada ao Tentar Acessar Funções
         function triggerToast(featureName) {
             showBlockedModal();
         }
 
         function showBlockedModal() {
             const modal = document.getElementById('blocked-modal');
-            if (modal) modal.classList.remove('hidden');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
         }
 
         function closeBlockedModal() {
             const modal = document.getElementById('blocked-modal');
-            if (modal) modal.classList.add('hidden');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
         }
+
+        // Simulação Dinâmica de Preços em Tempo Real
+        setInterval(() => {
+            const btcElement = document.getElementById('btc-price');
+            const btcRow = document.getElementById('row-btc');
+            if (btcElement) {
+                const basePrice = 81416.00;
+                const change = (Math.random() - 0.49) * 15;
+                const newPrice = basePrice + change;
+                btcElement.textContent = newPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                
+                // Efeito visual de variação
+                btcRow.classList.remove('flash-up', 'flash-down');
+                void btcRow.offsetWidth; // Trigger reflow
+                btcRow.classList.add(change >= 0 ? 'flash-up' : 'flash-down');
+            }
+        }, 3500);
     </script>
 </body>
 </html>
