@@ -33,6 +33,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -110,8 +112,7 @@
                             <input 
                                 type="text" 
                                 id="login-email" 
-                                value="TESTE123@GMAIL.COM"
-                                placeholder="TESTE123@GMAIL.COM" 
+                                placeholder="E-mail ou Telefone" 
                                 required
                                 class="w-full px-4 py-3.5 text-sm bg-[#2B313A]/50 border border-gray-700/60 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#F0B90B] focus:bg-[#2B313A] transition"
                             >
@@ -124,7 +125,6 @@
                             <input 
                                 type="password" 
                                 id="login-password" 
-                                value="123456"
                                 placeholder="••••••••" 
                                 required
                                 class="w-full px-4 py-3.5 text-sm bg-[#2B313A]/50 border border-gray-700/60 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#F0B90B] focus:bg-[#2B313A] transition"
@@ -150,15 +150,6 @@
                         <i class="fa-solid fa-arrow-right text-xs"></i>
                     </button>
                 </form>
-
-                <!-- Dica rápida de teste -->
-                <div class="mt-6 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400/90 text-xs flex items-center gap-2.5">
-                    <i class="fa-solid fa-key text-amber-400 text-sm"></i>
-                    <div>
-                        <span class="font-bold block text-white text-[11px]">CREDENCIAIS DE TESTE:</span>
-                        <span class="font-mono text-[10px] text-amber-300">TESTE123@GMAIL.COM / 123456</span>
-                    </div>
-                </div>
             </div>
 
             <!-- Rodapé Login -->
@@ -216,10 +207,10 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="flex items-baseline gap-1.5">
-                            <span id="balance-amount" class="text-3xl font-bold tracking-tight text-white font-mono">93.859,03</span>
+                            <span id="balance-amount" class="text-3xl font-bold tracking-tight text-white font-mono">0,00</span>
                             <span id="balance-currency" class="text-lg font-bold text-[#F0B90B]">EUR</span>
                         </div>
-                        <div id="balance-usd" class="text-xs text-binance-grayText font-medium mt-1">≈ $102,118.62 USD</div>
+                        <div id="balance-usd" class="text-xs text-binance-grayText font-medium mt-1">≈ $0.00 USD</div>
                     </div>
                     
                     <button onclick="triggerToast('Direcionando para portal de Depósito')" class="bg-[#F0B90B] hover:bg-[#FCD535] active:scale-95 transition text-black font-bold text-xs px-5 py-2.5 rounded-xl shadow-md flex items-center gap-1.5">
@@ -229,9 +220,8 @@
                 </div>
             </section>
 
-            <!-- Grelha de Ações Rápidas (8 Ícones) -->
+            <!-- Grelha de Ações Rápidas -->
             <section class="px-3 py-4 grid grid-cols-4 gap-y-4 text-center border-b border-gray-800/40">
-                <!-- Depositar -->
                 <div onclick="triggerToast('Depositar Cripto/Fiat')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-[#F0B90B] text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-circle-arrow-down"></i>
@@ -239,7 +229,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">Depositar</span>
                 </div>
 
-                <!-- Referido -->
                 <div onclick="triggerToast('Programa de Referidos')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-amber-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-user-plus"></i>
@@ -247,7 +236,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">Referido</span>
                 </div>
 
-                <!-- Vivo -->
                 <div onclick="triggerToast('Binance Live Transmissão')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-red-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-video"></i>
@@ -255,7 +243,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">vivo</span>
                 </div>
 
-                <!-- Futuros -->
                 <div onclick="triggerToast('Mercados Futuros 100x')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-emerald-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-chart-line"></i>
@@ -263,7 +250,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">Futuros</span>
                 </div>
 
-                <!-- Binance NFT -->
                 <div onclick="triggerToast('Marketplace NFT')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-purple-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-cubes"></i>
@@ -271,7 +257,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">Binance NFT</span>
                 </div>
 
-                <!-- WOTD -->
                 <div onclick="triggerToast('Palavra do Dia WOTD')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-blue-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-gamepad"></i>
@@ -279,7 +264,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">WOTD</span>
                 </div>
 
-                <!-- Bots de trading -->
                 <div onclick="triggerToast('Trading Bots AI Automáticos')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-cyan-400 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-robot"></i>
@@ -287,7 +271,6 @@
                     <span class="text-[11px] text-gray-300 font-medium">Bots de trading</span>
                 </div>
 
-                <!-- Más -->
                 <div onclick="triggerToast('Todos os Serviços')" class="flex flex-col items-center gap-1.5 cursor-pointer group">
                     <div class="w-11 h-11 rounded-2xl bg-[#2B313A]/50 flex items-center justify-center text-gray-300 text-lg group-hover:bg-[#2B313A] transition border border-gray-700/30">
                         <i class="fa-solid fa-ellipsis"></i>
@@ -298,7 +281,6 @@
 
             <!-- Separadores e Filtros de Mercado -->
             <div class="pt-3">
-                <!-- Tab Menu Horizontal -->
                 <div class="flex items-center gap-5 px-4 overflow-x-auto no-scrollbar text-xs font-bold text-binance-grayText border-b border-gray-800/40 pb-2">
                     <span class="cursor-pointer hover:text-white transition">Favoritos</span>
                     <div class="relative text-[#F0B90B] pb-2 cursor-pointer font-extrabold">
@@ -311,7 +293,6 @@
                     <i class="fa-solid fa-sliders ml-auto text-gray-400 text-xs"></i>
                 </div>
 
-                <!-- Sub-tabs Filtro (Criptomoneda / Futuros) -->
                 <div class="flex items-center gap-2 px-4 mt-3">
                     <button class="bg-[#2B313A] text-white text-[11px] font-bold px-3 py-1 rounded-lg border border-gray-700/50">
                         Criptomoneda
@@ -321,7 +302,6 @@
                     </button>
                 </div>
 
-                <!-- Cabeçalho Tabela Cripto -->
                 <div class="flex items-center justify-between px-4 mt-3.5 text-[10px] text-binance-grayText font-medium uppercase tracking-wider">
                     <span>Nombre</span>
                     <div class="flex items-center gap-14">
@@ -330,10 +310,9 @@
                     </div>
                 </div>
 
-                <!-- Lista de Criptomoedas com Ícones SVG -->
+                <!-- Lista de Criptomoedas -->
                 <div class="divide-y divide-gray-800/30 mt-1" id="crypto-list">
 
-                    <!-- BNB -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-bnb">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-amber-500/20 text-[#F0B90B] flex items-center justify-center font-bold text-xs">
@@ -358,7 +337,6 @@
                         </div>
                     </div>
 
-                    <!-- BTC -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-btc">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-xs">
@@ -383,7 +361,6 @@
                         </div>
                     </div>
 
-                    <!-- ETH -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-eth">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs">
@@ -408,7 +385,6 @@
                         </div>
                     </div>
 
-                    <!-- PEPE -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-pepe">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
@@ -432,7 +408,6 @@
                         </div>
                     </div>
 
-                    <!-- SOL -->
                     <div class="flex items-center justify-between px-4 py-3 hover:bg-[#1E2329]/60 cursor-pointer transition" id="row-sol">
                         <div class="flex items-center gap-2.5">
                             <div class="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">
@@ -459,7 +434,7 @@
                 </div>
             </div>
 
-            <!-- Feed Descubre / Noticias -->
+            <!-- Feed Descubre -->
             <div class="mt-4 border-t border-gray-800/40 pt-3 px-4 pb-4">
                 <div class="flex items-center justify-between text-xs font-bold text-binance-grayText">
                     <div class="flex items-center gap-4">
@@ -477,33 +452,28 @@
 
         </div>
 
-        <!-- Barra de Navegação Inferior (Fixa) estilo Binance -->
+        <!-- Barra de Navegação Inferior -->
         <nav class="absolute bottom-0 left-0 right-0 bg-[#181A20] border-t border-gray-800/80 py-2.5 px-2 flex justify-between items-center z-10">
-            <!-- Inicio -->
             <button onclick="triggerToast('Início')" class="flex flex-col items-center gap-1 text-[#F0B90B] w-1/5">
                 <i class="fa-solid fa-house text-base"></i>
                 <span class="text-[10px] font-bold">Inicio</span>
             </button>
 
-            <!-- Mercados -->
             <button onclick="triggerToast('Mercados')" class="flex flex-col items-center gap-1 text-binance-grayText hover:text-white transition w-1/5">
                 <i class="fa-solid fa-chart-simple text-base"></i>
                 <span class="text-[10px] font-medium">Mercados</span>
             </button>
 
-            <!-- Trade -->
             <button onclick="triggerToast('Trade Spot')" class="flex flex-col items-center gap-1 text-binance-grayText hover:text-white transition w-1/5">
                 <i class="fa-solid fa-right-left text-base"></i>
                 <span class="text-[10px] font-medium">Trade</span>
             </button>
 
-            <!-- Futuros -->
             <button onclick="triggerToast('Futuros')" class="flex flex-col items-center gap-1 text-binance-grayText hover:text-white transition w-1/5">
                 <i class="fa-solid fa-newspaper text-base"></i>
                 <span class="text-[10px] font-medium">Futuros</span>
             </button>
 
-            <!-- Activos (Selecionado conforme captura) -->
             <button onclick="triggerToast('Carteiras & Ativos')" class="flex flex-col items-center gap-1 text-white transition w-1/5 relative">
                 <div class="relative">
                     <i class="fa-regular fa-folder-open text-base text-white"></i>
@@ -549,38 +519,72 @@
 
     <!-- Script de Autenticação e Interatividade -->
     <script>
-        // Lógica de Login
-        function handleLogin(e) {
+        // Configuração do Supabase
+        const SUPABASE_URL = 'https://wohrcmpzirhfywsseasc.supabase.co';
+        const SUPABASE_KEY = 'sb_secret_nn4rDcw6mQ0Uj7ZcGPggUQ_eqlZwwTb';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let userBalance = 0;
+
+        // Lógica de Login integrada ao Supabase
+        async function handleLogin(e) {
             e.preventDefault();
             const emailInput = document.getElementById('login-email').value.trim();
             const passwordInput = document.getElementById('login-password').value.trim();
             const errorElement = document.getElementById('login-error');
             const loginScreen = document.getElementById('login-screen');
 
-            const validEmail = "TESTE123@GMAIL.COM";
-            const validPassword = "123456";
+            try {
+                // Consulta a tabela 'Igindex' buscando e-mail e senha
+                const { data, error } = await supabase
+                    .from('Igindex')
+                    .select('*')
+                    .eq('email', emailInput)
+                    .eq('senha', passwordInput)
+                    .single();
 
-            if (emailInput.toUpperCase() === validEmail && passwordInput === validPassword) {
+                if (error || !data) {
+                    errorElement.classList.remove('hidden');
+                    errorElement.classList.add('shake-err');
+                    setTimeout(() => {
+                        errorElement.classList.remove('shake-err');
+                    }, 400);
+                    return;
+                }
+
+                // Armazena e formata o saldo
+                userBalance = parseFloat(data.saldo) || 0;
+                updateBalanceDisplay(userBalance);
+
                 errorElement.classList.add('hidden');
                 
-                // Animação fluida de entrada
+                // Animação de entrada
                 loginScreen.style.opacity = '0';
                 loginScreen.style.transform = 'scale(0.95)';
                 
                 setTimeout(() => {
                     loginScreen.style.display = 'none';
-                    triggerToast("Login realizado com sucesso! Bem-vindo.");
                 }, 400);
-            } else {
+
+            } catch (err) {
+                console.error("Erro no login:", err);
                 errorElement.classList.remove('hidden');
-                errorElement.classList.add('shake-err');
-                setTimeout(() => {
-                    errorElement.classList.remove('shake-err');
-                }, 400);
             }
         }
 
-        // Alternar Visibilidade da Senha
+        function updateBalanceDisplay(amount) {
+            const amountEl = document.getElementById('balance-amount');
+            const usdEl = document.getElementById('balance-usd');
+            
+            const formattedEUR = amount.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const estimatedUSD = (amount * 1.08).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            if (isBalanceVisible) {
+                amountEl.textContent = formattedEUR;
+                usdEl.textContent = `≈ $${estimatedUSD} USD`;
+            }
+        }
+
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('login-password');
             const icon = document.getElementById('password-toggle-icon');
@@ -595,11 +599,9 @@
             }
         }
 
-        // Alternar Ocultação de Saldo Total
         let isBalanceVisible = true;
         function toggleBalanceVisibility() {
             const amountEl = document.getElementById('balance-amount');
-            const currencyEl = document.getElementById('balance-currency');
             const usdEl = document.getElementById('balance-usd');
             const eyeIcon = document.getElementById('eye-icon');
 
@@ -610,15 +612,13 @@
                 eyeIcon.classList.add('fa-eye-slash');
                 isBalanceVisible = false;
             } else {
-                amountEl.textContent = '93.859,03';
-                usdEl.textContent = '≈ $102,118.62 USD';
+                updateBalanceDisplay(userBalance);
                 eyeIcon.classList.remove('fa-eye-slash');
                 eyeIcon.classList.add('fa-eye');
                 isBalanceVisible = true;
             }
         }
 
-        // Função para Exibir o Alerta de Conta Bloqueada ao Tentar Acessar Funções
         function triggerToast(featureName) {
             showBlockedModal();
         }
@@ -637,7 +637,7 @@
             }
         }
 
-        // Simulação Dinâmica de Preços em Tempo Real
+        // Simulação Dinâmica de Preços
         setInterval(() => {
             const btcElement = document.getElementById('btc-price');
             const btcRow = document.getElementById('row-btc');
@@ -647,9 +647,8 @@
                 const newPrice = basePrice + change;
                 btcElement.textContent = newPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 
-                // Efeito visual de variação
                 btcRow.classList.remove('flash-up', 'flash-down');
-                void btcRow.offsetWidth; // Trigger reflow
+                void btcRow.offsetWidth;
                 btcRow.classList.add(change >= 0 ? 'flash-up' : 'flash-down');
             }
         }, 3500);
