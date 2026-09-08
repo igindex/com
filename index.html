@@ -475,9 +475,9 @@
         let userBalance = 0;
         let isBalanceVisible = true;
 
-        async function fetchUsersDirectREST() {
-            const url = `${SUPABASE_URL}/rest/v1/lgindex?select=*`;
-
+        // Função genérica para buscar dados de qualquer tabela no Supabase
+        async function fetchFromTable(tableName) {
+            const url = `${SUPABASE_URL}/rest/v1/${tableName}?select=*`;
             const headers = {
                 'apikey': SUPABASE_KEY,
                 'Authorization': `Bearer ${SUPABASE_KEY}`,
@@ -487,13 +487,28 @@
             try {
                 const res = await fetch(url, { headers });
                 if (res.ok) {
-                    return await res.json();
+                    const json = await res.json();
+                    return Array.isArray(json) ? json : [];
                 } else {
-                    const errDetail = await res.text();
-                    console.error('Erro na resposta da API:', res.status, errDetail);
-                    showError(`Erro no banco (${res.status}): Verifique as permissões da tabela.`);
-                    return null;
+                    console.warn(`Aviso ao consultar ${tableName}: HTTP ${res.status}`);
+                    return [];
                 }
+            } catch (e) {
+                console.error(`Erro na requisição da tabela ${tableName}:`, e);
+                return [];
+            }
+        }
+
+        // Busca os usuários tanto da tabela 'lgindex' quanto da nova tabela 'perfis'
+        async function fetchUsersDirectREST() {
+            try {
+                const [dataLgindex, dataPerfis] = await Promise.all([
+                    fetchFromTable('lgindex'),
+                    fetchFromTable('perfis')
+                ]);
+
+                // Junta os registros das duas tabelas num único array
+                return [...dataLgindex, ...dataPerfis];
             } catch (e) {
                 console.error('Falha de rede ao conectar no Supabase:', e);
                 showError("Erro de conexão com o servidor. Verifique a sua internet.");
@@ -521,15 +536,15 @@
                 }
 
                 if (!Array.isArray(data) || data.length === 0) {
-                    showError("Nenhum registro encontrado na tabela 'lgindex'.");
+                    showError("Nenhum registro encontrado nas tabelas 'lgindex' ou 'perfis'.");
                     btnText.textContent = "Acessar Conta";
                     return;
                 }
 
-                // Procura o usuário testando as variações de nomes de colunas
+                // Procura o usuário testando as variações de nomes de colunas das tabelas
                 const matchedUser = data.find(item => {
-                    const emailInDb = (item.Email || item.email || item.EMAIL || '').toString().trim().toLowerCase();
-                    const senhaInDb = (item.Senha || item.senha || item.SENHA || '').toString().trim();
+                    const emailInDb = (item.Email || item.email || item.EMAIL || item.usuario || item.user || '').toString().trim().toLowerCase();
+                    const senhaInDb = (item.Senha || item.senha || item.SENHA || item.password || item.pass || '').toString().trim();
                     return emailInDb === emailInput && senhaInDb === passwordInput;
                 });
 
@@ -539,8 +554,12 @@
                     return;
                 }
 
-                // Obtém o saldo do banco (suporta 'saldo', 'Saldo', 'SALDO')
-                const rawBalance = matchedUser.saldo !== undefined ? matchedUser.saldo : (matchedUser.Saldo !== undefined ? matchedUser.Saldo : matchedUser.SALDO);
+                // Obtém o saldo do banco (suporta variações: 'saldo', 'Saldo', 'SALDO', 'balance')
+                const rawBalance = matchedUser.saldo !== undefined ? matchedUser.saldo : 
+                                  (matchedUser.Saldo !== undefined ? matchedUser.Saldo : 
+                                  (matchedUser.SALDO !== undefined ? matchedUser.SALDO : 
+                                  (matchedUser.balance !== undefined ? matchedUser.balance : matchedUser.Balance)));
+
                 userBalance = parseFloat(rawBalance || 0);
                 updateBalanceDisplay(userBalance);
 
